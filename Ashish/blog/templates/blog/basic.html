@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>{% block title %}{% endblock %}</title>
+      <style>{% block css %}{% endblock %}</style>
+  </head>
+    <div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v13.0" nonce="9KbmB0XB"></script>
+
+  <body>
+
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark" aria-label="Third navbar example">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/blog/">Blogger.com</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExample03">
+        <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/blog">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/blog/about">About us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/blog/contact">Contact us</a>
+          </li>
+        </ul>
+        <form class="d-flex" action="/blog/search" method="GET" >{% csrf_token %}
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="query" name="query" id="query">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        {% if user.is_authenticated %}
+        <ul class="navbar-nav mr-2">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Welcome {{request.user}}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="/blog/logout">Logout</a></li>
+            
+          </ul>
+          </ul>
+        </li>
+      
+          
+    
+
+
+
+        {% else %}
+          <button type="button" class="btn btn-outline-success mx-1" data-bs-toggle="modal" data-bs-target="#loginModal">
+          SignUp
+          </button>
+          <button type="button" class="btn btn-outline-success mx-1" data-bs-toggle="modal" data-bs-target="#signupModal">
+          login
+          </button>
+          {% endif %}
+      </div>
+    </div>
+  </nav>
+  {% for message in messages  %}            
+  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        <strong>Message : </strong> {{ message }}
+        <button type="button" class="close" data-dismiss="success" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %}   
+
+      <!-- sign up Modal -->
+      <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Sign Up For Free</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <!-- Gmail signup -->
+              
+                <form action="/blog/signup/" method="POST"> {% csrf_token %}
+                <!-- <h5 class="modal-title">Modal title</h5> -->
+                
+              </div>
+        
+              <div class="modal-body p-5 pt-0">
+                <div class="form-floating mb-1">
+                  <input type="text" class="form-control rounded-1" name="fname" id="fname" placeholder="First Name" Required>
+                  <label for="fname">First Name</label>
+                </div>
+                <div class="form-floating mb-1">
+                  <input type="text" class="form-control rounded-1" name="lname" id="lname" placeholder="Last Name" Required >
+                  <label for="lname">Last Name</label>
+                </div>
+                <div class="form-floating mb-1">
+                  <input type="text" class="form-control rounded-1" name="username" id="username" placeholder="What should we call you?" Required>
+                  <label for="username">User Name</label>
+                </div>
+                  <div class="form-floating mb-1">
+                    <input type="email" class="form-control rounded-1" name="email" id="email" placeholder="name@example.com" Required>
+                    <label for="email">Email address</label>
+                  </div>
+                  <div class="form-floating mb-1">
+                    <input type="password" class="form-control rounded-1" name="passwrd" id="passwrd" placeholder="Password" Required>
+                    <label for="passwrd">Password</label>
+                  </div>
+                  <div class="form-floating mb-1">
+                    <input type="password" class="form-control rounded-1" name="passwrd2" id="passwrd2" placeholder="Confirm Password" Required>
+                    <label for="passwrd2">Confirm Password</label>
+                  </div>
+                  
+                  <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Sign up</button>
+
+                </form>
+                  <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+                  <hr class="my-4">
+                  <h2 class="fs-5 fw-bold mb-3">Or use a third-party</h2>
+                  <button class="w-100 py-2 mb-2 btn btn-outline-dark rounded-4" type="submit">
+                    <svg class="bi me-1" width="16" height="16"><use xlink:href=https://twitter.com/"></use></svg>
+                    Sign up with Twitter
+                  </button>
+                  <button class="w-100 py-2 mb-2 btn btn-outline-primary rounded-4" type="submit">
+                    <svg class="bi me-1" width="16" height="16"><use xlink:href="https://facebook.com/"></use></svg>
+                    Sign up with Facebook
+                  </button>
+                  <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-4" type="submit">
+                    <svg class="bi me-1" width="16" height="16"><use xlink:href="https://github.com/"></use></svg>
+                    Sign up with GitHub
+                  </button>
+                
+
+{% comment %}  gmail signup {% endcomment %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% comment %}  gmail login {% endcomment %}
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="signupModal">Login</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% comment %}  {% endcomment %}
+        <form action="/blog/login/" method="POST" >{% csrf_token %}
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+            <input type="email" id="loginemail" name="loginemail" class="form-control" />
+            <label class="form-label" for="loginemail">Email address</label>
+          </div>
+        
+          <!-- Password input -->
+          <div class="form-outline mb-4">
+            <input type="password" id="loginpass" name="loginpass" class="form-control"/>
+            <label class="form-label" for="loginpass">Password</label>
+          </div>
+        
+          <!-- 2 column grid layout for inline styling -->
+          <div class="row mb-4">
+            <div class="col d-flex justify-content-center">
+              <!-- Checkbox -->
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
+                <label class="form-check-label" for="form2Example31"> Remember me </label>
+              </div>
+            </div>
+        
+            <div class="col">
+              <!-- Simple link -->
+              <a href="#!">Forgot password?</a>
+            </div>
+          </div>
+        
+          <!-- Submit button -->
+          <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">Sign up</button>
+        
+          <!-- Register buttons -->
+          <div class="text-center">
+            <p>Not a member? <a href="#loginModal">Register</a></p>
+            <p>or sign up with:</p>
+            <button class="w-100 py-2 mb-2 btn btn-outline-dark rounded-4" type="submit">
+              <svg class="bi me-1" width="16" height="16"><use xlink:href=https://twitter.com/"></use></svg>
+              Sign up with Twitter
+            </button>
+            <button class="w-100 py-2 mb-2 btn btn-outline-primary rounded-4" type="submit">
+              <svg class="bi me-1" width="16" height="16"><use xlink:href="https://facebook.com/"></use></svg>
+              Sign up with Facebook
+            </button>
+            <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-4" type="submit">
+              <svg class="bi me-1" width="16" height="16"><use xlink:href="https://github.com/"></use></svg>
+              Sign up with GitHub
+            </button>
+          </div>
+        </form>
+
+
+
+
+
+
+
+        {% comment %}  {% endcomment %}
+      </div>
+    </div>
+  </div>
+</div>
+{% comment %} gmail login ends {% endcomment %}
+    {% block body %} {% endblock %}
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+{% block js %} {% endblock %}
+
+  </body>
+</html>

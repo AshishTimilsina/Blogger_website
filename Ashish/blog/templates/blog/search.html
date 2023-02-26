@@ -1,0 +1,49 @@
+{%extends 'blog/basic.html'%}
+{% block title %} search{% endblock %}
+
+
+{% block body %}
+<div class="container mt-3">
+<h1>Search Results......</h1>
+{% if allposts|length < 1 %}
+<p>No Search Results..</p>
+Your Search Query : <b>'{{query}}'</b> did not match any documents.<br>
+Suggestions:
+<ul>
+  <li>Make sure that all words are spelled correctly.</li>
+  <li>Try more general keywords.</li>
+ <li> Try fewer keywords.</li>
+ <li> Try different keywords.</li>
+  </li>
+</ul>
+
+{% endif %}
+
+    {% for items in allposts %}
+    <div class="row my-2">
+    <div class="col-md-6">
+      <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static" style="width: 200px; height: 300px;">
+          <strong class="d-inline-block mb-2 text-primary">{{items.title}}</strong>
+<!--          <h3 class="mb-0">{{items.Head0}}</h3>-->
+          <div class="mb-1 text-muted">{{items.Pub_date}}</div>
+          <p class="card-text mb-auto">{{items.para0|slice:"0:170"}} ......</p>
+          <a href="/blog/blogpost/{{items.post_id}}" class="stretched-link">Continue reading</a>
+        </div>
+        <div class="col-auto d-none d-lg-block">
+          <img src="/media/{{items.Thumbnail}}" class="bd-placeholder-img" width="250" height="250" aria-label="Placeholder: Thumbnail">
+
+        </div>
+      </div>
+    </div>
+  {% if forloop.counter|divisibleby:2 %}
+</div>
+   <div class="row my-2">
+        {% endif %}
+        {% endfor %}</div>
+</div>
+
+{% endblock %}
+
+
+
